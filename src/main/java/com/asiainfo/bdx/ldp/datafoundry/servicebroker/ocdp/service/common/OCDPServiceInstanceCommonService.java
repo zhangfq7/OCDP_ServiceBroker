@@ -203,19 +203,8 @@ public class OCDPServiceInstanceCommonService {
             // no need to check/create again.
             String username = users.get(0);
             if (createLDAPUser(username)){
-                // New LDAP user created, should create krb principal/keytab too
-                createKrbPricAndKeytab(username, password);
-            } else {
-                // Exists LDAP user, no need to create again;
-                // but need generate keytab if keytab not created before.
-                String principalName = username + "@" + clusterConfig.getKrbRealm();
-                String keytab = etcdClient.readToString(
-                        "/servicebroker/ocdp/user/krbinfo/" + principalName + "/keytab");
-                if (keytab == null){
-                    keytab = kc.createKeyTabString(principalName, password, null);
-                    etcdClient.write("/servicebroker/ocdp/user/krbinfo/" + principalName + "/keytab", keytab);
-                    logger.info("Generate keytab string " + keytab + " for exists principal " + principalName);
-                }
+                // New LDAP user created, should create krb principal too
+                createKrbPrinc(username, password);
             }
         }
         // 2) Create policy for service instance or append user to an exists policy
@@ -305,7 +294,7 @@ public class OCDPServiceInstanceCommonService {
             }
             kc.createPrincipal(principalName, password);
             // Return base64 encoded keytab string for principal
-            String keytab = kc.createKeyTabString(principalName, password, null);
+            String keytab = kc.createKeyTabString(principalName, password);
             etcdClient.write("/servicebroker/ocdp/user/krbinfo/" + principalName + "/keytab", keytab);
             logger.info("Generate keytab string " + keytab + " for principal " + principalName);
             return keytab;
