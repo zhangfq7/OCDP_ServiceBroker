@@ -136,6 +136,7 @@ public class ClusterConfig implements EnvironmentAware{
     //Hadoop Spark History server
     private String spark_thrift_server;
     private String spark_thrift_port;
+    private String spark_thrift_superUser;
     private String spark_history_url;
     
     private String zk_connection; // eg: ochadoop111.jcloud.local:2181
@@ -205,6 +206,7 @@ public class ClusterConfig implements EnvironmentAware{
         this.spark_history_url = env.getProperty("SPARK_HISTORY_URL");
         this.spark_thrift_server = env.getProperty("SPARK_THRIFT_SERVER");
         this.spark_thrift_port = env.getProperty("SPARK_THRIFT_PORT");
+        this.spark_thrift_superUser = env.getProperty("SPARK_THRIFT_SUPERUSER");
         this.zk_connection = env.getProperty("OC_ZK_CONNECTION");
         this.kafka_jaas_path = env.getProperty("KAFKA_JAAS_PATH");
         this.kafka_hosts = env.getProperty("KAFKA_HOSTS");
@@ -286,6 +288,7 @@ public class ClusterConfig implements EnvironmentAware{
 
     public String getSparkThriftServer() { return spark_thrift_server; }
     public String getSparkThriftPort() { return spark_thrift_port; }
+    public String getSparkThriftSuperUser() { return spark_thrift_superUser; }
     public String getSparkHistoryURL() { return spark_history_url; }
 
     public etcdClient getEtcdClient(){
