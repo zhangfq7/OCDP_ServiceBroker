@@ -13,12 +13,6 @@ import java.util.UUID;
  */
 public class YarnCapacityCalculator {
 
-//    private String planId;
-
-//    private String serviceInstanceId;
-
-//    private CapacitySchedulerConfig csConfig;
-    private Logger logger = LoggerFactory.getLogger(YarnCapacityCalculator.class);
     private Map<String,String> properties;
     private String allQueues;
     private Double totalMemory;
@@ -27,9 +21,6 @@ public class YarnCapacityCalculator {
 
     public YarnCapacityCalculator(String totalMem, CapacitySchedulerConfig csConfig){
 
-//        this.planId = planId;
-//        this.serviceInstanceId = serviceInstanceId;
-//        this.csConfig = csConfig;
         this.properties = csConfig.getItems().get(0).getProperties();
         this.totalMemory = Double.parseDouble(totalMem);
         this.availableCapacity = Double.parseDouble(properties.get("yarn.scheduler.capacity.root.default.capacity"));
@@ -178,7 +169,6 @@ public class YarnCapacityCalculator {
         return newQueueMapStr;
     }
 
-
     public String addQueueMapping(String user, String queue){
         String absoluteQueueName = queue.substring(5);
         String newQueueMapStr = null;
@@ -193,9 +183,5 @@ public class YarnCapacityCalculator {
 
         return newQueueMapStr;
     }
-
-
-
-
 
 }
