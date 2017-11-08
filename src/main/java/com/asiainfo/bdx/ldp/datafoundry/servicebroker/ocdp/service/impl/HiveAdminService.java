@@ -65,7 +65,7 @@ public class HiveAdminService implements OCDPAdminService {
         }
         String queuePath = yarnCommonService.createQueue(quota.get(OCDPConstants.YARN_QUEUE_QUOTA));
         // Split prefix "root." from queue name.
-        String queueName = queuePath.split(".")[1];
+        String queueName = queuePath.startsWith("root.", 0) ? queuePath.split("\\.")[1] : queuePath;
         // Cache queue name in etcd
         etcdClient.write("/servicebroker/ocdp/instance/" + serviceInstanceId + "/Credentials/" +
                 OCDPConstants.YARN_RESOURCE_TYPE, queueName);
