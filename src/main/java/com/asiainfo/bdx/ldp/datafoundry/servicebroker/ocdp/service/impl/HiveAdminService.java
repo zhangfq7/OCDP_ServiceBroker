@@ -201,7 +201,7 @@ public class HiveAdminService implements OCDPAdminService {
                         "?mapreduce.job.queuename=" + queueName);
                 put("host", clusterConfig.getHiveHost());
                 put("port", clusterConfig.getHivePort());
-                put(OCDPConstants.HIVE_RESOURCE_TYPE, dbName);
+                // put(OCDPConstants.HIVE_RESOURCE_TYPE, dbName);
             }
         };
     }

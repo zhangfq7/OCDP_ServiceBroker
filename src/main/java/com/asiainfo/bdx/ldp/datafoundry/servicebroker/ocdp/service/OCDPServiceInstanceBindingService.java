@@ -12,6 +12,7 @@ import com.asiainfo.bdx.ldp.datafoundry.servicebroker.ocdp.repository.OCDPServic
 import com.asiainfo.bdx.ldp.datafoundry.servicebroker.ocdp.repository.OCDPServiceInstanceRepository;
 import com.asiainfo.bdx.ldp.datafoundry.servicebroker.ocdp.utils.OCDPAdminServiceMapper;
 
+import com.asiainfo.bdx.ldp.datafoundry.servicebroker.ocdp.utils.OCDPConstants;
 import org.springframework.cloud.servicebroker.exception.ServiceInstanceDoesNotExistException;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceAppBindingResponse;
 import org.springframework.cloud.servicebroker.model.CreateServiceInstanceBindingRequest;
@@ -95,6 +96,13 @@ public class OCDPServiceInstanceBindingService implements ServiceInstanceBinding
 	        String userPrincipal = params.get("user_name") + "@" + clusterConfig.getKrbRealm();
 	        String password = etcdClient.readToString("/servicebroker/ocdp/user/krbinfo/" + userPrincipal + "/password");
 	        Map<String, Object> serviceInstanceCredentials = instance.getServiceInstanceCredentials();
+			// for hive, restore the value(from 'dbName:queueName' to 'dbName')
+			if (OCDPAdminServiceMapper.getOCDPResourceType(serviceDefinitionId).equals(OCDPConstants.HIVE_RESOURCE_TYPE)){
+				String dbname = (String) serviceInstanceCredentials.get(OCDPConstants.HIVE_RESOURCE_TYPE);
+				serviceInstanceCredentials.put(OCDPConstants.HIVE_RESOURCE_TYPE, dbname.split(":")[0]);
+				if (serviceInstanceCredentials.containsKey(OCDPConstants.YARN_RESOURCE_TYPE))
+					serviceInstanceCredentials.remove(OCDPConstants.YARN_RESOURCE_TYPE);
+			}
 	        serviceInstanceCredentials.put("username", userPrincipal);
 	        serviceInstanceCredentials.put("password", password);
 	        // save service instance binding
