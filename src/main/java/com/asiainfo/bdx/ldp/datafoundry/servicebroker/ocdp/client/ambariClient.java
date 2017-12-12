@@ -52,7 +52,13 @@ public class ambariClient {
         }
         this.baseUri = URI.create(uri);
 
-        this.httpClient = HttpClientBuilder.create().build();
+//        this.httpClient = HttpClientBuilder.create().build();
+        try {
+            this.httpClient = new SSLClient();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 
         HttpHost targetHost = new HttpHost(this.baseUri.getHost(), 8080, "http");
         CredentialsProvider provider = new BasicCredentialsProvider();

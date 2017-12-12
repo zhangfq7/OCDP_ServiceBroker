@@ -44,7 +44,12 @@ public class yarnClient{
         }
         URI baseUri = URI.create(uri);
         this.baseUris.add(baseUri);
-        this.httpClient = HttpClientBuilder.create().build();
+//        this.httpClient = HttpClientBuilder.create().build();
+        try {
+            this.httpClient = new SSLClient();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         HttpHost targetHost = new HttpHost(baseUri.getHost(), baseUri.getPort(), baseUri.getScheme());
         AuthCache authCache = new BasicAuthCache();
         authCache.put(targetHost, new BasicScheme());

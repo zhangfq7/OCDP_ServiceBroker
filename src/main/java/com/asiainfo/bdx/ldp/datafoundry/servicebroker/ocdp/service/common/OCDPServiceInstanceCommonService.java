@@ -141,6 +141,7 @@ public class OCDPServiceInstanceCommonService {
         // 3) Clean service instance from etcd
         repository.delete(serviceInstanceId);
         logger.info("Delete service instance " + serviceInstanceId + " successfully!");
+
         return new DeleteServiceInstanceResponse().withAsync(false);
 	}
 
